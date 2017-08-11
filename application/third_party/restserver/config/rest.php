@@ -62,7 +62,7 @@ $config['rest_supported_formats'] = [
 | The field name for the status inside the response
 |
 */
-$config['rest_status_field_name'] = 'status';
+$config['rest_status_field_name'] = 'ret';
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +72,7 @@ $config['rest_status_field_name'] = 'status';
 | The field name for the message inside the response
 |
 */
-$config['rest_message_field_name'] = 'error';
+$config['rest_message_field_name'] = 'msg';
 
 /*
 |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ $config['enable_emulate_request'] = TRUE;
 | e.g: My Secret REST API
 |
 */
-$config['rest_realm'] = 'REST API';
+$config['rest_realm'] = 'I2 REST API';
 
 /*
 |--------------------------------------------------------------------------
@@ -126,7 +126,7 @@ $config['rest_auth'] = FALSE;
 | Note: If 'rest_auth' is set to 'session' then change 'auth_source' to the name of the session variable
 |
 */
-$config['auth_source'] = 'ldap';
+$config['auth_source'] = 'library';
 
 /*
 |--------------------------------------------------------------------------
@@ -156,8 +156,8 @@ $config['strict_api_and_auth'] = TRUE; // force the use of both api and auth bef
 | e.g: md5('admin:REST API:1234') = '1e957ebc35631ab22d5bd6526bd14ea2'
 |
 */
-$config['auth_library_class'] = '';
-$config['auth_library_function'] = '';
+$config['auth_library_class'] = 'auth';
+$config['auth_library_function'] = 'login';
 
 /*
 |--------------------------------------------------------------------------
@@ -184,6 +184,8 @@ $config['auth_library_function'] = '';
 // $config['auth_override_class_method']['accounts']['user'] = 'basic';
 // $config['auth_override_class_method']['dashboard']['*'] = 'basic';
 
+$config['auth_override_class_method']['auth']['*'] = 'none';
+$config['auth_override_class_method']['check']['*'] = 'none';
 
 // ---Uncomment list line for the wildard unit test
 // $config['auth_override_class_method']['wildcard_test_cases']['*'] = 'basic';
@@ -299,7 +301,7 @@ $config['rest_database_group'] = 'default';
 | The table name in your database that stores API keys
 |
 */
-$config['rest_keys_table'] = 'keys';
+$config['rest_keys_table'] = 'api_token';
 
 /*
 |--------------------------------------------------------------------------
@@ -324,7 +326,7 @@ $config['rest_keys_table'] = 'keys';
 |   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
 */
-$config['rest_enable_keys'] = FALSE;
+$config['rest_enable_keys'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -335,7 +337,7 @@ $config['rest_enable_keys'] = FALSE;
 | column name to match e.g. my_key
 |
 */
-$config['rest_key_column'] = 'key';
+$config['rest_key_column'] = 'access_token';
 
 /*
 |--------------------------------------------------------------------------
@@ -377,7 +379,7 @@ $config['rest_key_length'] = 40;
 | 2012/06/12. See RFC 6648 specification for more details
 |
 */
-$config['rest_key_name'] = 'X-API-KEY';
+$config['rest_key_name'] = 'X-ACCESS-TOKEN';
 
 /*
 |--------------------------------------------------------------------------
@@ -415,7 +417,7 @@ $config['rest_enable_logging'] = FALSE;
 | table name to match e.g. my_logs
 |
 */
-$config['rest_logs_table'] = 'logs';
+$config['rest_logs_table'] = 'api_logs';
 
 /*
 |--------------------------------------------------------------------------
@@ -604,3 +606,12 @@ $config['allow_any_cors_domain'] = FALSE;
 |
 */
 $config['allowed_cors_origins'] = [];
+
+$config['rest'] = array(
+    // Raw PHP Headers
+    'headers' => [
+        'Access-Control-Allow-Origin: *',
+        'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-KEY',
+    ]
+);

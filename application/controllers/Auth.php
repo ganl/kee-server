@@ -1,0 +1,57 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ganl
+ * Date: 2017/8/10
+ * Time: 14:30
+ */
+
+class Auth extends API_Controller
+{
+    protected $methods = [
+        'token_post' => ['level' => 10, 'limit' => 30]// 30 requests per hour per user/key
+    ];
+
+    public function token_post() {
+
+        //check params and check user info
+        $user_id = $this->post('username');
+
+        // Build a new key
+        $key = $this->_generate_key();
+
+        // If no key level provided, provide a generic key
+        $level = $this->post('level') ? $this->post('level') : 1;
+        $ignore_limits = ctype_digit($this->post('ignore_limits')) ? (int) $this->post('ignore_limits') : 1;
+
+        // Insert the new key
+        if ($this->_insert_key($key, ['user_id' => $user_id, 'level' => $level, 'ignore_limits' => $ignore_limits]))
+        {
+            $this->response([
+                'ret' => REST_Controller::HTTP_OK,
+                'data' => [
+                    'returnCode' => 0,
+                    'returnMsg' => 0,
+                    'token' => $key
+                ],
+                'msg' => ''
+            ], REST_Controller::HTTP_OK); // CREATED (201) being the HTTP response code ?
+        }
+        else
+        {
+            $this->response([
+                'ret' => REST_Controller::HTTP_INTERNAL_SERVER_ERROR,
+                'data' => [
+                    'returnCode' => 0,
+                    'returnMsg' => 0,
+                    'token' => $key
+                ],
+                'msg' => 'Could not save the key'
+            ], REST_Controller::HTTP_INTERNAL_SERVER_ERROR); // INTERNAL_SERVER_ERROR (500) being the HTTP response code
+        }
+    }
+
+    public function refresh_token_post() {
+
+    }
+}
