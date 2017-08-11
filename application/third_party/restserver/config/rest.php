@@ -213,7 +213,7 @@ $config['auth_override_class_method']['check']['*'] = 'none';
 | Array of usernames and passwords for login, if ldap is configured this is ignored
 |
 */
-$config['rest_valid_logins'] = ['admin' => '1234'];
+$config['rest_valid_logins'] = [];
 
 /*
 |--------------------------------------------------------------------------
@@ -406,7 +406,7 @@ $config['rest_key_name'] = 'X-ACCESS-TOKEN';
 |   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
 */
-$config['rest_enable_logging'] = FALSE;
+$config['rest_enable_logging'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
