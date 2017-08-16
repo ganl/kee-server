@@ -6,9 +6,7 @@
  * Time: 23:53
  */
 
-// error reporting
-ini_set('display_errors',1);
-error_reporting(E_ALL);
+if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Oauth2
 {
