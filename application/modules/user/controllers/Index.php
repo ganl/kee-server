@@ -38,7 +38,6 @@ class Index extends API_Controller
         $data = $this->users
             ->select('user_uuid, username, email, active, first_name, last_name')
             ->get_all();
-        var_dump($data);
         $this->response($data);
     }
 
