@@ -1040,8 +1040,16 @@ abstract class REST_Controller extends MX_Controller {
         $this->rest->user_id = NULL;
         $this->rest->ignore_limits = FALSE;
 
+        //add for old API's params
+        $key = isset($this->_args[$api_key_variable]) ? $this->_args[$api_key_variable] : $this->input->server($key_name);
+        if(is_null($key)){
+            $key = $this->input->get_post('Token');
+        }
+
+
         // Find the key from server or arguments
-        if (($key = isset($this->_args[$api_key_variable]) ? $this->_args[$api_key_variable] : $this->input->server($key_name)))
+//        if (($key = isset($this->_args[$api_key_variable]) ? $this->_args[$api_key_variable] : $this->input->server($key_name)))
+        if (!is_null($key))
         {
             if ( ! ($row = $this->rest->db->where($this->config->item('rest_key_column'), $key)->get($this->config->item('rest_keys_table'))->row()))
             {

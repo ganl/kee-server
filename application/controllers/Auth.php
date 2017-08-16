@@ -16,7 +16,7 @@ class Auth extends API_Controller
     }
 
     protected $methods = [
-        'token_post' => ['level' => 10, 'limit' => 30]// 30 requests per hour per user/key
+        'token_post' => ['level' => 10, 'limit' => 300]// 300 requests per hour per user/key
     ];
 
     public function token_post() {

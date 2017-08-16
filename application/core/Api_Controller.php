@@ -20,6 +20,7 @@ class API_Controller extends REST_Controller
         // send PHP headers when necessary (e.g. enable CORS)
         $config = $this->config->item('rest');
         $this->load->model('user_model', 'users');
+        $this->load->library('i2_auth');
 
         $headers = empty($config['headers']) ? array() : $config['headers'];
         foreach ($headers as $header) {
@@ -48,11 +49,11 @@ class API_Controller extends REST_Controller
             $this->mUser = $this->users->get_by('username', $this->mApiKey->user_id);
             // only when the API Key represents a user
             if (!empty($this->mUser)) {
-                // TODO: get group with most permissions (instead of getting first group)
-
+                $this->mUserRoles = $this->i2_auth->get_user_roles($this->mUser->id);
+                $this->mUserMainRole = $this->mUserRoles[0]->name;
             } else {
                 // anonymous access via API Key
-                $this->mUserMainGroup = 'anonymous';
+                $this->mUserMainRole = 'anonymous';
             }
         }
     }

@@ -103,9 +103,9 @@ class Index extends API_Controller
         $data = elements(array('first_name', 'last_name'), $this->put());
 
         // proceed to update user
-        $updated = $this->ion_auth->update($id, $data);
+        $updated = $this->i2_auth->update($id, $data);
 
         // result
-        ($updated) ? $this->success($this->ion_auth->messages()) : $this->error($this->ion_auth->errors());
+        ($updated) ? $this->success($this->i2_auth->messages()) : $this->error($this->i2_auth->errors());
     }
 }
