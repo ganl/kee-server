@@ -77,7 +77,7 @@ class MX_Router extends CI_Router
 		}
 		else
 		{
-			$segments[1] = 'Docs';
+			$segments[1] = 'index';
 		}
        
 		array_unshift($segments, NULL);

@@ -55,7 +55,7 @@ class Modules
 	**/
 	public static function run($module) 
 	{	
-		$method = 'Docs';
+		$method = 'index';
 		
 		if(($pos = strrpos($module, '/')) != FALSE) 
 		{
