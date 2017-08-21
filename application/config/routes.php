@@ -85,3 +85,12 @@ $route['api/v1/(:any)/(:num)']			= "api_v1/$1/id/$2";
 $route['api/v1/(:any)/(:num)/(:any)']	= "api_v1/$1/$3/$2";
 $route['api/v1/(:any)/(:any)']			= "api_v1/$1/$2";
 */
+
+//$route['api/user/(:any)/(:num)']                = 'user/$1/id/$2';
+//$route['api/user/(:any)/(:num)/(:any)']         = 'user/$1/$3/$2';
+//
+$route['node/(:any)']                           = 'node/node/$1';
+//$route['node/(:any)/(:num)']                    = 'node/index/$1/$2';
+//$route['node/(:any)/(:num)/(:any)']             = 'node/index/$1/$3/$2';
+
+//$route['api/node'] = 'node/index';

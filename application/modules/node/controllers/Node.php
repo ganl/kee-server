@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Demo Controller with Swagger annotations
  * Reference: https://github.com/zircote/swagger-php/
  */
-class Index extends API_Controller
+class Node extends API_Controller
 {
 
     public function __construct()
