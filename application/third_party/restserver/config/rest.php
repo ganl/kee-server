@@ -184,6 +184,8 @@ $config['auth_library_function'] = 'login';
 // $config['auth_override_class_method']['accounts']['user'] = 'basic';
 // $config['auth_override_class_method']['dashboard']['*'] = 'basic';
 
+$config['auth_override_class_method']['example']['*'] = 'none';
+
 $config['auth_override_class_method']['auth']['*'] = 'none';
 $config['auth_override_class_method']['check']['*'] = 'none';
 

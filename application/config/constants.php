@@ -83,3 +83,32 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+/*
+|--------------------------------------------------------------------------
+| Custom Constants
+|--------------------------------------------------------------------------
+|
+|
+*/
+if (!(PHP_SAPI === 'cli' OR defined('STDIN'))) {
+    // Base URL with directory support
+    $protocol = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
+    $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'];
+    $base_url .= dirname($_SERVER['SCRIPT_NAME']);
+    define('BASE_URL', $base_url);
+
+    // For API prefix in Api_Controller
+    define('API_HOST', $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']));
+}
+
+define('CC_REPO', 'https://code.info2soft.com/web/i2cc.git');
+define('API_VERSION', '1.5.1');    // will follow semantic version (e.g. v1.x.x)
+
+define ('CC_VERSION', '6.2-18458');
+define ('CC_BUILDDATE', '20170707');
+
+// paths
+define('UPLOAD_BAK_FILE_PATH', 'assets/bak/uploads');
+define('BACKUP_CC_FILE_PATH', 'assets/bak/download');
+define('UPGRADE_FILE_PATH', 'assets/upgrade');
