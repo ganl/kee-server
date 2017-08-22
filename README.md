@@ -10,17 +10,18 @@ Listen 58080
 ### Apache 2.2
 
 ```
-<VirtualHost *:80>
+<VirtualHost *:80> # * , _default_
     ServerAdmin info@info2soft.com
     DocumentRoot "/var/www/html/public"
-    ServerName dev.info2soft.com
+    ServerName dev.i2
     ErrorLog logs/pms-error_log
     CustomLog logs/pms-access_log common
-  <Directory "/var/www/html/pms/www">
+  <Directory "/var/www/html/public">
     Options FollowSymLinks
     AllowOverride All
     Order allow,deny
     Allow from all
+    DirectoryIndex index.html index.php
   </Directory>
 </VirtualHost>
 ```
