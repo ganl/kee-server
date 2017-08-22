@@ -103,7 +103,7 @@ if (!(PHP_SAPI === 'cli' OR defined('STDIN'))) {
 }
 
 define('CC_REPO', 'https://code.info2soft.com/web/i2cc.git');
-define('API_VERSION', '1.5.1');    // will follow semantic version (e.g. v1.x.x)
+define('API_VERSION', '2.0.0');    // will follow semantic version (e.g. v1.x.x)
 
 define ('CC_VERSION', '6.2-18458');
 define ('CC_BUILDDATE', '20170707');
