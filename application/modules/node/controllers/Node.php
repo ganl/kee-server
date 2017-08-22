@@ -17,9 +17,9 @@ class Node extends API_Controller
 
     /**
      * @SWG\Get(
-     *    path="/nodes",
-     *    tags={"user"},
-     *    summary="List out users",
+     *    path="node/hello",
+     *    tags={"node"},
+     *    summary="send hello message to node",
      * 	@SWG\Parameter(
      *        in="header",
      *        name="X-API-KEY",

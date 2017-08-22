@@ -1,4 +1,35 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * Class ApiController
+ *
+ * @package application\core\Controllers
+ *
+ * @SWG\Swagger(
+ *     basePath="",
+ *     host=API_HOST,
+ *     schemes={"http", "https"},
+ *     @SWG\Info(
+ *         version=API_VERSION,
+ *         title="i2soft rest API",
+ *         @SWG\Contact(name="", url="https://www.info2soft.com"),
+ *     ),
+ *     @SWG\Definition(
+ *         definition="Error",
+ *         required={"ret", "msg"},
+ *         @SWG\Property(
+ *             property="ret",
+ *             type="integer",
+ *             format="int32"
+ *         ),
+ *         @SWG\Property(
+ *             property="msg",
+ *             type="string"
+ *         )
+ *     )
+ * )
+ */
 
 require_once(APPPATH . 'third_party/restserver/libraries/REST_Controller.php');
 
