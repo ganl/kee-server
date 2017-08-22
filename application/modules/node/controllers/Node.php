@@ -17,20 +17,20 @@ class Node extends API_Controller
 
     /**
      * @SWG\Get(
-     *    path="node/hello",
+     *    path="/node/hello",
      *    tags={"node"},
      *    summary="send hello message to node",
-     * 	@SWG\Parameter(
+     *    @SWG\Parameter(
      *        in="header",
      *        name="X-API-KEY",
      *        description="API Key",
      *        required=false,
      *        type="string"
      *    ),
-     * 	@SWG\Response(
+     *    @SWG\Response(
      *        response="200",
      *        description="List of users",
-     * 		@SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
+     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
      *    )
      * )
      */
@@ -41,6 +41,25 @@ class Node extends API_Controller
         $this->response($data);
     }
 
+    /**
+     * @SWG\Post(
+     *    path="/node/auth",
+     *    tags={"node"},
+     *    summary="send hello message to node",
+     *    @SWG\Parameter(
+     *        in="header",
+     *        name="X-API-KEY",
+     *        description="API Key",
+     *        required=false,
+     *        type="string"
+     *    ),
+     *    @SWG\Response(
+     *        response="200",
+     *        description="List of users",
+     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
+     *    )
+     * )
+     */
     public function auth_post()
     {
         $params = [
@@ -50,7 +69,7 @@ class Node extends API_Controller
         $response = $this->rpc_client->node_os_auth('http://172.16.117.128:26821', $params);
         $data['returnCode'] = $response;
         $data['returnMsg'] = '';
-        if(in_array($data['returnCode'], array(1, 2))){
+        if (in_array($data['returnCode'], array(1, 2))) {
             $data['osType'] = $response;
             $data['returnCode'] = 0;
         }
@@ -59,20 +78,20 @@ class Node extends API_Controller
 
     /**
      * @SWG\Get(
-     *    path="/nodes",
+     *    path="/node/index",
      *    tags={"user"},
      *    summary="List out users",
-     * 	@SWG\Parameter(
+     *  @SWG\Parameter(
      *        in="header",
      *        name="X-API-KEY",
      *        description="API Key",
      *        required=false,
      *        type="string"
      *    ),
-     * 	@SWG\Response(
+     *  @SWG\Response(
      *        response="200",
      *        description="List of users",
-     * 		@SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
+     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
      *    )
      * )
      */
@@ -89,19 +108,19 @@ class Node extends API_Controller
      *    path="/node/{node_uuid}",
      *    tags={"user"},
      *    summary="Look up a user",
-     * 	@SWG\Parameter(
+     *    @SWG\Parameter(
      *        in="path",
      *        name="user_uuid",
      *        description="User ID",
      *        required=true,
      *        type="integer"
      *    ),
-     * 	@SWG\Response(
+     *    @SWG\Response(
      *        response="200",
      *        description="User object",
-     * 		@SWG\Schema(ref="#/definitions/User")
+     *        @SWG\Schema(ref="#/definitions/Node")
      *    ),
-     * 	@SWG\Response(
+     *    @SWG\Response(
      *        response="404",
      *        description="Invalid user ID"
      *    )
@@ -120,21 +139,21 @@ class Node extends API_Controller
      *    path="/node/{uuid}",
      *    tags={"node"},
      *    summary="Update an existing user",
-     * 	@SWG\Parameter(
+     *    @SWG\Parameter(
      *        in="path",
      *        name="id",
      *        description="User ID",
      *        required=true,
      *        type="integer"
      *    ),
-     * 	@SWG\Parameter(
+     *    @SWG\Parameter(
      *        in="body",
      *        name="body",
      *        description="User info",
      *        required=true,
-     * 		@SWG\Schema(ref="#/definitions/UserPut")
+     *        @SWG\Schema(ref="#/definitions/Node")
      *    ),
-     * 	@SWG\Response(
+     *    @SWG\Response(
      *        response="200",
      *        description="Successful operation"
      *    )
