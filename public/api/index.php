@@ -90,7 +90,6 @@ switch (ENVIRONMENT)
 		echo 'The application environment is not set correctly.';
 		exit(1); // EXIT_ERROR
 }
-
 /*
  *---------------------------------------------------------------
  * SYSTEM DIRECTORY NAME
@@ -99,7 +98,7 @@ switch (ENVIRONMENT)
  * This variable must contain the name of your "system" directory.
  * Set the path if it is not in the same directory as this file.
  */
-	$system_path = 'system';
+	$system_path = dirname(dirname(__DIR__)).'/system';
 
 /*
  *---------------------------------------------------------------
@@ -116,7 +115,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = 'application';
+	$application_folder = dirname(dirname(__DIR__)).'/application';
 
 /*
  *---------------------------------------------------------------
