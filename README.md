@@ -1,5 +1,11 @@
 # 控制台API
 
+## init
+
+```
+cd application
+composer install
+```
 ## add listen port and VirtualHost 
 
 ```
@@ -14,8 +20,8 @@ Listen 58080
     ServerAdmin info@info2soft.com
     DocumentRoot "/var/www/html/public"
     ServerName dev.i2
-    ErrorLog logs/pms-error_log
-    CustomLog logs/pms-access_log common
+    ErrorLog logs/api-error_log
+    CustomLog logs/api-access_log common
   <Directory "/var/www/html/public">
     Options FollowSymLinks
     AllowOverride All
