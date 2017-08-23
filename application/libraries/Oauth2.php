@@ -11,8 +11,6 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Oauth2
 {
 
-    protected $CI;
-
     private $_dsn;
     private $_username;
     private $_password;
@@ -24,17 +22,19 @@ class Oauth2
 
     public function __construct()
     {
-        // Assign the CodeIgniter super-object
-        $this->CI =& get_instance();
-        $this->CI->config->load('database');
+        $this->config->load('database');
 
-
-        $this->_dsn = $this->CI->config->item('db_config')['dsn'];
-        $this->_username = $this->CI->config->item('db_config')['username'];
-        $this->_password = $this->CI->config->item('db_config')['password'];
+        $this->_dsn = $this->config->item('db_config')['dsn'];
+        $this->_username = $this->config->item('db_config')['username'];
+        $this->_password = $this->config->item('db_config')['password'];
 
         $this->init();
 
+    }
+
+    function __get($name)
+    {
+        return get_instance()->$name;
     }
 
     protected function init(){

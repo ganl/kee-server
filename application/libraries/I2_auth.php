@@ -12,7 +12,6 @@ class I2_auth
 
     public function __construct()
     {
-        // Assign the CodeIgniter super-object
         $this->config->load('auth', TRUE);
         $this->load->model('auth_model');
     }

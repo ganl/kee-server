@@ -8,25 +8,39 @@
 
 /**
  * @SWG\Tag(
- *   name="node",
+ *   name="auth",
  *   description="Everything about your",
  *   @SWG\ExternalDocumentation(
  *     description="Find out more",
- *     url="http://swagger.io"
+ *     url="http://www.info2soft.com"
  *   )
  * )
  *
- * @SWG\Tag(
- *   name="store",
- *   description="Access to Petstore orders"
- * )
  *
  * @SWG\Tag(
- *   name="users",
+ *   name="user",
  *   description="Operations about user",
  *   @SWG\ExternalDocumentation(
  *     description="Find out more about our store",
  *     url="http://www.info2soft.com"
  *   )
  * )
+ *
+ *
+ * @SWG\Tag(
+ *   name="node",
+ *   description="Everything about your",
+ *   @SWG\ExternalDocumentation(
+ *     description="Find out more",
+ *     url="http://www.info2soft.com"
+ *   )
+ * )
+ *
+ *
+ * @SWG\Tag(
+ *   name="store",
+ *   description="Access to Petstore orders"
+ * )
+ *
+ *
  */

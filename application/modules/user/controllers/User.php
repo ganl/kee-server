@@ -19,17 +19,17 @@ class User extends API_Controller
      *    path="/users",
      *    tags={"user"},
      *    summary="List out users",
-     * 	@SWG\Parameter(
+     *    @SWG\Parameter(
      *        in="header",
      *        name="X-API-KEY",
      *        description="API Key",
      *        required=false,
      *        type="string"
      *    ),
-     * 	@SWG\Response(
+     *    @SWG\Response(
      *        response="200",
      *        description="List of users",
-     * 		@SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
+     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
      *    )
      * )
      */

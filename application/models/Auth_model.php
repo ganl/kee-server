@@ -66,7 +66,6 @@ class Auth_model extends MY_Model
             }else{
                 return hash($this->hash_method, $password . $salt);
             }
-
         }
     }
 
@@ -91,7 +90,6 @@ class Auth_model extends MY_Model
             }
             return ($hash_pwd == $user->password ? TRUE : FALSE);
         }
-
     }
 
     /**

@@ -55,7 +55,7 @@ CREATE TABLE users (
 ALTER TABLE public.users OWNER TO i2soft;
 
 INSERT INTO users (id, tenant_id, user_uuid, username, password, first_name, last_name, create_time) VALUES
-(1, 1, '1BCFCAA3-E3C8-3E28-BDC5-BE36FDC2B5DC', 'admin', 'pass', 'default', 'admin', extract(epoch from now()));
+(1, 1, '1BCFCAA3-E3C8-3E28-BDC5-BE36FDC2B5DC', 'admin', '$2y$10$sz.Nyy677HMNNM4TU9j1muwMRdeHDPoIFC51hRv1rqxOGjb0NC04m', 'default', 'admin', extract(epoch from now()));
 
 CREATE TABLE "login_attempts" (
   "id" serial NOT NULL ,

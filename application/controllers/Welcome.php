@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Welcome extends MX_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -23,4 +23,17 @@ class Welcome extends CI_Controller {
         $this->load->helper('url');
 		$this->load->view('welcome_message');
 	}
+
+//    public function make_base() {
+//        $this->load->library('VpxMigration');
+//
+//        // All Tables:
+//        $this->vpxmigration->generate();
+//    }
+
+    public function test_upgrade()
+    {
+        $this->load->library('migrate');
+        $this->migrate->upgrade();
+    }
 }

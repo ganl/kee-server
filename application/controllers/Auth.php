@@ -19,6 +19,24 @@ class Auth extends API_Controller
         'token_post' => ['level' => 10, 'limit' => 300]// 300 requests per hour per user/key
     ];
 
+    /**
+     * @SWG\Post(
+     *    path="/auth/token",
+     *    tags={"auth"},
+     *    summary="Obtain token",
+     *    @SWG\Parameter(
+     *        in="body",
+     *        name="body",
+     *        description="User info",
+     *        required=true,
+     *        @SWG\Schema(ref="#/definitions/Auth")
+     *    ),
+     *    @SWG\Response(
+     *        response="200",
+     *        description="Successful operation"
+     *    )
+     * )
+     */
     public function token_post() {
 
         //check params and check user info
