@@ -13,7 +13,7 @@ class Migration_base_table extends CI_Migration
 
     public function up()
     {
-        if (!$this->db->table_exists('tenant_test')) {
+        if (!$this->db->table_exists('tenant')) {
             $this->dbforge->add_field(array(
                 'id' => array(
                     'type' => 'serial',
@@ -40,14 +40,14 @@ class Migration_base_table extends CI_Migration
                 ),
             ));
             $this->dbforge->add_key('id', TRUE);
-            $this->dbforge->create_table('tenant_test');
+            $this->dbforge->create_table('tenant');
         }
     }
 
     public function down()
     {
-        if ($this->db->table_exists('tenant_test')) {
-            $this->dbforge->drop_table('tenant_test');
+        if ($this->db->table_exists('tenant')) {
+            $this->dbforge->drop_table('tenant');
         }
     }
 }
