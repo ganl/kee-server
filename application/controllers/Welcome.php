@@ -31,9 +31,20 @@ class Welcome extends MX_Controller {
 //        $this->vpxmigration->generate();
 //    }
 
-    public function test_upgrade()
+//    public function test_upgrade()
+//    {
+//        $this->load->library('migrate');
+//        $this->migrate->upgrade();
+//    }
+
+    public function test_error()
     {
-        $this->load->library('migrate');
-        $this->migrate->upgrade();
+        echo '<pre>';
+        echo i2_code('dir.check_not_exist') . "\n";
+        echo Err::$errCodes['dir.check_not_exist'] . "\n";
+        echo i2_msg('400') . "\n";
+        $this->lang->load('auth');
+        echo i2_msg(Err::$errCodes['login_successful']) . "\n";
+        echo i2_msg(Err::$errCodes['login_successful'], true) . "\n";
     }
 }

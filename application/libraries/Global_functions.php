@@ -40,7 +40,6 @@ class Global_functions
             $uuid = substr($uuid, 1, strlen($uuid) - 2);
             return $uuid;
         } else {
-            #mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
             $charid = md5(uniqid(rand(), true));
             $hyphen = chr(45);// "-"
             $uuid = //chr(123)// "{".

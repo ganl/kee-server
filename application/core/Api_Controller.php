@@ -7,26 +7,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @package application\core\Controllers
  *
  * @SWG\Swagger(
- *     basePath="",
- *     host=API_HOST,
  *     schemes={"http", "https"},
+ *     host=API_HOST,
+ *     basePath="",
+ *     description="",
+ *     termsOfService="http://www.info2soft.com/",
  *     @SWG\Info(
  *         version=API_VERSION,
  *         title="i2soft rest API",
  *         @SWG\Contact(name="", url="https://www.info2soft.com"),
- *     ),
- *     @SWG\Definition(
- *         definition="Error",
- *         required={"ret", "msg"},
- *         @SWG\Property(
- *             property="ret",
- *             type="integer",
- *             format="int32"
- *         ),
- *         @SWG\Property(
- *             property="msg",
- *             type="string"
+ *         @SWG\License(
+ *             name="",
+ *             url=""
  *         )
+ *     ),
+ *     @SWG\ExternalDocumentation(
+ *         description="Find out more about i2soft",
+ *         url="http://www.info2soft.com"
  *     )
  * )
  */

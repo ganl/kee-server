@@ -71,8 +71,20 @@ class Migrate
     {
         if (!$this->migration->current() === true) {
             log_message('error', $this->migration->error_string());
+            return true;
         } else {
-            echo 'upgrade success!';
+            log_message('info', 'upgrade success!') ;
+            return false;
         }
+    }
+
+    public function backup()
+    {
+
+    }
+
+    public function restore()
+    {
+
     }
 }
