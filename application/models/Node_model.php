@@ -10,5 +10,5 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Node_model extends MY_Model
 {
-
+    protected $_table = 'nodes';
 }

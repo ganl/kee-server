@@ -17,6 +17,8 @@ ALTER DATABASE i2soft OWNER TO i2soft;
 
 \connect i2soft
 
+CREATE SCHEMA i2soft AUTHORIZATION i2soft;
+
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;

@@ -38,7 +38,11 @@ class API_Controller extends REST_Controller
 
     // API Key object to represent identity consuming the API endpoint
     protected $mApiKey = NULL;
+    protected $mUserRoles = NULL;
+    protected $mUserTenant = NULL;
     protected $_config;
+
+    public $tenant_table_prefix = '';
 
     // Constructor
     public function __construct()
@@ -57,7 +61,7 @@ class API_Controller extends REST_Controller
         is_array($config) OR $config = array();
         $this->_config = array_merge(array(
 //            'token_type'             => 'bearer',
-            'access_lifetime'        => 7200,
+            'access_lifetime' => 7200,
             'refresh_token_lifetime' => 1209600
         ), $config);
 
@@ -68,16 +72,34 @@ class API_Controller extends REST_Controller
     protected function verify_token()
     {
         // lookup API Key record by value from HTTP header
-        $key = $this->input->get_request_header(config_item('rest_key_name'));
-        if(is_null($key)){
-            $key = $this->input->get_post('Token');
+        if (is_null($this->rest->key)) {
+            $key = $this->input->get_request_header(config_item('rest_key_name'));
+            if (is_null($key)) {
+                $key = $this->input->get_post('Token');
+            }
+            $this->mApiKey = $this->api_keys->get_by(config_item('rest_key_column'), $key);
+            if (!is_null($this->mApiKey)) {
+                $this->rest->key = $this->mApiKey->{config_item('rest_key_column')};
+
+                isset($this->mApiKey->user_id) && $this->rest->user_id = $this->mApiKey->user_id;
+                isset($this->mApiKey->level) && $this->rest->level = $this->mApiKey->level;
+                isset($this->mApiKey->ignore_limits) && $this->rest->ignore_limits = $this->mApiKey->ignore_limits;
+
+                $this->_apiuser = $this->mApiKey;
+            }
+
+        } else {
+            $this->mApiKey = $this->_apiuser;
         }
-        $this->mApiKey = $this->api_keys->get_by('access_token', $key);
+
         if (!empty($this->mApiKey)) {
             $this->mUser = $this->users->get_by('username', $this->mApiKey->user_id);
             // only when the API Key represents a user
             if (!empty($this->mUser)) {
                 $this->mUserRoles = $this->i2_auth->get_user_roles($this->mUser->id);
+//                $this->mUserTenant = $this->users->get_user_tenant($this->mUser->id);
+                $this->mUserTenant = $this->i2_auth->get_user_tenant($this->mUser->id);
+                $this->tenant_table_prefix = $this->mUserTenant->tenant_name;
                 $this->mUserMainRole = $this->mUserRoles[0]->name;
             } else {
                 // anonymous access via API Key
@@ -202,7 +224,7 @@ class API_Controller extends REST_Controller
             }*/
             $rand = $this->security->get_random_bytes(64);
             $salt = ($rand === FALSE)
-                ? md5(uniqid(mt_rand(), TRUE)).hash('sha256', time() . mt_rand())
+                ? md5(uniqid(mt_rand(), TRUE)) . hash('sha256', time() . mt_rand())
                 : bin2hex($rand);
             $new_key = substr($salt, 0, config_item('rest_key_length'));
         } while ($this->_key_exists($new_key));

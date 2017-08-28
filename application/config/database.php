@@ -104,6 +104,7 @@ $db['i2soft'] = array(
 	'database' => 'i2soft',
 	'dbdriver' => 'postgre',
     'port' => 5432,
+//    'schema' => 'i2soft', // default public
     'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
@@ -143,4 +144,5 @@ $db['oauth'] = array(
 
 $config['db_config'] = $db['oauth'];
 $config['db_config_prod'] = $db['i2soft'];
+$config['db_config_prod_schema'] = 'i2soft';
 $config['db_forge'] = 'default';

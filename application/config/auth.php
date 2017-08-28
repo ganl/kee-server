@@ -29,6 +29,7 @@ $config['tables'] = array(
  | Joins from users.id
  | Joins from roles.id
  */
+$config['join']['tenant']  = 'tenant_id';
 $config['join']['users']  = 'user_id';
 $config['join']['roles']  = 'role_id';
 $config['join']['groups'] = 'group_id';

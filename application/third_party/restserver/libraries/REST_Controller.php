@@ -544,7 +544,7 @@ abstract class REST_Controller extends MX_Controller {
         {
             // Display an error response
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_ajax_only')
                 ], self::HTTP_NOT_ACCEPTABLE);
         }
@@ -630,7 +630,7 @@ abstract class REST_Controller extends MX_Controller {
         if ($this->config->item('force_https') && $this->request->ssl === FALSE)
         {
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_unsupported')
                 ], self::HTTP_FORBIDDEN);
 
@@ -667,7 +667,7 @@ abstract class REST_Controller extends MX_Controller {
             }
 
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => sprintf($this->lang->line('text_rest_invalid_api_key'), $this->rest->key)
                 ], self::HTTP_FORBIDDEN);
 
@@ -683,7 +683,7 @@ abstract class REST_Controller extends MX_Controller {
             }
 
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_api_key_unauthorized')
                 ], self::HTTP_UNAUTHORIZED);
 
@@ -694,7 +694,7 @@ abstract class REST_Controller extends MX_Controller {
         if (! method_exists($this, $controller_method))
         {
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_unknown_method')
                 ], self::HTTP_METHOD_NOT_ALLOWED);
 
@@ -707,7 +707,7 @@ abstract class REST_Controller extends MX_Controller {
             // Check the limit
             if ($this->config->item('rest_enable_limits') && $this->_check_limit($controller_method) === FALSE)
             {
-                $response = [$this->config->item('rest_status_field_name') => FALSE, $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_api_key_time_limit')];
+                $response = [$this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST, $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_api_key_time_limit')];
                 $this->response($response, self::HTTP_UNAUTHORIZED);
 
                 $this->is_valid_request = false;
@@ -726,7 +726,7 @@ abstract class REST_Controller extends MX_Controller {
             if($authorized === FALSE)
             {
                 // They don't have good enough perms
-                $response = [$this->config->item('rest_status_field_name') => FALSE, $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_api_key_permissions')];
+                $response = [$this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST, $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_api_key_permissions')];
                 $this->response($response, self::HTTP_UNAUTHORIZED);
 
                 $this->is_valid_request = false;
@@ -736,7 +736,7 @@ abstract class REST_Controller extends MX_Controller {
         //check request limit by ip without login
         elseif ($this->config->item('rest_limits_method') == "IP_ADDRESS" && $this->config->item('rest_enable_limits') && $this->_check_limit($controller_method) === FALSE)
         {
-            $response = [$this->config->item('rest_status_field_name') => FALSE, $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_ip_address_time_limit')];
+            $response = [$this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST, $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_ip_address_time_limit')];
             $this->response($response, self::HTTP_UNAUTHORIZED);
 
             $this->is_valid_request = false;
@@ -1042,10 +1042,11 @@ abstract class REST_Controller extends MX_Controller {
 
         //add for old API's params
         $key = isset($this->_args[$api_key_variable]) ? $this->_args[$api_key_variable] : $this->input->server($key_name);
+//        $key = $this->input->get_request_header($api_key_variable);
+
         if(is_null($key)){
             $key = $this->input->get_post('Token');
         }
-
 
         // Find the key from server or arguments
 //        if (($key = isset($this->_args[$api_key_variable]) ? $this->_args[$api_key_variable] : $this->input->server($key_name)))
@@ -1055,7 +1056,6 @@ abstract class REST_Controller extends MX_Controller {
             {
                 return FALSE;
             }
-
             $this->rest->key = $row->{$this->config->item('rest_key_column')};
 
             isset($row->user_id) && $this->rest->user_id = $row->user_id;
@@ -1982,7 +1982,7 @@ abstract class REST_Controller extends MX_Controller {
         {
             // Display an error response
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_unauthorized')
                 ], self::HTTP_UNAUTHORIZED);
         }
@@ -2080,7 +2080,7 @@ abstract class REST_Controller extends MX_Controller {
         {
             // Display an error response
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_invalid_credentials')
                 ], self::HTTP_UNAUTHORIZED);
         }
@@ -2102,7 +2102,7 @@ abstract class REST_Controller extends MX_Controller {
         {
             // Display an error response
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_ip_denied')
                 ], self::HTTP_UNAUTHORIZED);
         }
@@ -2130,7 +2130,7 @@ abstract class REST_Controller extends MX_Controller {
         if (in_array($this->input->ip_address(), $whitelist) === FALSE)
         {
             $this->response([
-                    $this->config->item('rest_status_field_name') => FALSE,
+                    $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_ip_unauthorized')
                 ], self::HTTP_UNAUTHORIZED);
         }
@@ -2168,7 +2168,7 @@ abstract class REST_Controller extends MX_Controller {
 
         // Display an error response
         $this->response([
-                $this->config->item('rest_status_field_name') => FALSE,
+                $this->config->item('rest_status_field_name') => self::HTTP_BAD_REQUEST,
                 $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_unauthorized')
             ], self::HTTP_UNAUTHORIZED);
     }

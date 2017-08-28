@@ -19,6 +19,7 @@ class Migrate
     private $_prod_db;
     private $_prod_user;
     private $_prod_pwd;
+    private $_prod_schema;
 
     public function __construct()
     {
@@ -27,6 +28,7 @@ class Migrate
         $this->_prod_db = config_item('db_config_prod')['database'];
         $this->_prod_user = config_item('db_config_prod')['username'];
         $this->_prod_pwd = config_item('db_config_prod')['password'];
+        $this->_prod_schema = config_item('db_config_prod_schema');
 
         $this->forge_db = $this->load->database(config_item('db_forge'), true);
         $this->my_util = $this->load->dbutil($this->forge_db, true);
@@ -46,6 +48,7 @@ class Migrate
         }
 
         $this->load->database();
+        $this->db->query("CREATE SCHEMA " . $this->_prod_schema . " AUTHORIZATION " . $this->_prod_user);
         $this->load->dbutil();
         $this->load->dbforge();
 
@@ -69,6 +72,7 @@ class Migrate
 
     public function upgrade()
     {
+        $this->load->library('migration');
         if (!$this->migration->current() === true) {
             log_message('error', $this->migration->error_string());
             return true;

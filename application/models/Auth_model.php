@@ -179,6 +179,14 @@ class Auth_model extends MY_Model
         return $user;
     }
 
+    public function get_user_tenant($id)
+    {
+        $query = $this->_database->join($this->auth_tables['tenant'], $this->auth_tables['users'].'.'.$this->join['tenant'].'='.$this->auth_tables['tenant'].'.id')
+            ->where($this->auth_tables['users'].'.id', $id)
+            ->get($this->auth_tables['users']);
+        return $query->row();
+    }
+
     public function get_user_roles($id) {
         $query = $this->_database->join($this->auth_tables['roles'], $this->auth_tables['role_user'].'.'.$this->join['roles'].'='.$this->auth_tables['roles'].'.id')
             ->where($this->auth_tables['role_user'].'.'.$this->join['users'], $id)

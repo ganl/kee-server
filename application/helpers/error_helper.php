@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 include_once(APPPATH.'libraries/Error_message.php');
 
-if (!function_exists(i2_code)) {
+if (!function_exists('i2_code')) {
     //success to use Err::$errCodes directly
     function i2_code($code)
     {
@@ -18,7 +18,7 @@ if (!function_exists(i2_code)) {
     }
 }
 
-if (!function_exists(i2_msg)) {
+if (!function_exists('i2_msg')) {
     function i2_msg($code, $translate = false)
     {
         if($translate) {

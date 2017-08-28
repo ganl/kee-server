@@ -293,7 +293,7 @@ $config['rest_ip_blacklist'] = '';
 | if you have any of these features enabled
 |
 */
-$config['rest_database_group'] = 'default';
+$config['rest_database_group'] = 'i2soft';
 
 /*
 |--------------------------------------------------------------------------
@@ -614,6 +614,6 @@ $config['rest'] = array(
     'headers' => [
         'Access-Control-Allow-Origin: *',
         'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-KEY',
+        'Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-KEY, X-ACCESS-TOKEN',
     ]
 );

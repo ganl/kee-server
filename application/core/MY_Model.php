@@ -20,6 +20,10 @@ class MY_Model extends Base_Model
     protected $order_by = array();
     protected $upload_fields = array();
 
+    public function set_schema($schema) {
+        $this->_database->schema = $schema;
+    }
+
     /**
      * Extra functions on top of Base_Model
      */

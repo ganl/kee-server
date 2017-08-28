@@ -24,18 +24,18 @@ class Welcome extends MX_Controller {
 		$this->load->view('welcome_message');
 	}
 
-//    public function make_base() {
-//        $this->load->library('VpxMigration');
-//
-//        // All Tables:
-//        $this->vpxmigration->generate();
-//    }
+/*    public function make_base() {
+        $this->load->library('VpxMigration');
 
-//    public function test_upgrade()
-//    {
-//        $this->load->library('migrate');
-//        $this->migrate->upgrade();
-//    }
+        // All Tables:
+        $this->vpxmigration->generate();
+    }*/
+
+    public function test_upgrade()
+    {
+        $this->load->library('migrate');
+        $this->migrate->upgrade();
+    }
 
     public function test_error()
     {
