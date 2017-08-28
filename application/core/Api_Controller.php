@@ -48,6 +48,7 @@ class API_Controller extends REST_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->set_t_prefix();
 
         // send PHP headers when necessary (e.g. enable CORS)
         $config = $this->config->item('rest');
@@ -66,6 +67,13 @@ class API_Controller extends REST_Controller
         ), $config);
 
         $this->verify_token();
+
+    }
+
+    public function set_t_prefix()
+    {
+        $global_t_prefix = [ 'tenant_table_prefix' => $this->tenant_table_prefix ];
+        $this->load->vars($global_t_prefix);
     }
 
     // Verify access token (e.g. API Key, JSON Web Token)
@@ -100,6 +108,7 @@ class API_Controller extends REST_Controller
 //                $this->mUserTenant = $this->users->get_user_tenant($this->mUser->id);
                 $this->mUserTenant = $this->i2_auth->get_user_tenant($this->mUser->id);
                 $this->tenant_table_prefix = $this->mUserTenant->tenant_name;
+                $this->set_t_prefix();
                 $this->mUserMainRole = $this->mUserRoles[0]->name;
             } else {
                 // anonymous access via API Key

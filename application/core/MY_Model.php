@@ -15,13 +15,30 @@ class MY_Model extends Base_Model
     public $before_get = array('callback_before_get');
     public $after_get = array('callback_after_get');
 
-    // Variables from CI Bootstrap (see demo repo for examples)
     protected $where = array();
     protected $order_by = array();
     protected $upload_fields = array();
 
-    public function set_schema($schema) {
+    public function set_schema($schema)
+    {
         $this->_database->schema = $schema;
+    }
+
+    //multi tenant
+    public function get_tenant_prefix()
+    {
+        $ci = &get_instance();
+        return $ci->load->get_var('tenant_table_prefix');
+    }
+
+    public function set_tenant_prefix()
+    {
+        $dbprefix = $this->get_tenant_prefix();
+        if ($dbprefix == '__default__') {
+            log_message('debug', 'Default system tenant');
+            return;
+        }
+        $this->_database->set_dbprefix($dbprefix . '_');
     }
 
     /**
