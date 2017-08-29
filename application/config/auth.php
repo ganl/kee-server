@@ -63,3 +63,9 @@ $config['store_salt']  = FALSE;
 $config['use_password_hash']          = FALSE;              // default use to password_hash algorithm (PASSWORD_DEFAULT, PASSWORD_BCRYPT) , will ignore hash_method
 $config['password_hash_algo']         = PASSWORD_BCRYPT;    // password_hash algorithm (PASSWORD_DEFAULT, PASSWORD_BCRYPT) , hash_method = bcrypt
 $config['password_hash_options']      = array();            // password_hash options array , hash_method = bcrypt
+
+$config['track_login_attempts']       = TRUE;               // Track the history of login attempts for each user or ip.
+$config['track_login_ip_address']     = TRUE;               // Track login attempts by IP Address
+$config['captcha_login_attempts']     = 5;                  // Login Attempts to display CAPTCHA
+$config['maximum_login_attempts']     = 12;                  // The maximum number of failed login attempts.
+$config['lockout_time']               = 900;                // The number of seconds to lockout an account due to exceeded attempts

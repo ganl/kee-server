@@ -52,6 +52,7 @@ CREATE TABLE users (
   active integer DEFAULT 0,
   create_time BIGINT NOT NULL,
   last_login BIGINT DEFAULT NULL,
+  ip_address varchar(15) NOT NULL,
   PRIMARY KEY (id)
 );
 ALTER TABLE public.users OWNER TO i2soft;
@@ -59,13 +60,15 @@ ALTER TABLE public.users OWNER TO i2soft;
 INSERT INTO users (id, tenant_id, user_uuid, username, password, first_name, last_name, create_time) VALUES
 (1, 1, '1BCFCAA3-E3C8-3E28-BDC5-BE36FDC2B5DC', 'admin', '$2y$10$sz.Nyy677HMNNM4TU9j1muwMRdeHDPoIFC51hRv1rqxOGjb0NC04m', 'default', 'admin', extract(epoch from now()));
 
-CREATE TABLE "login_attempts" (
-  "id" serial NOT NULL ,
-  "ip_address" varchar(15) NOT NULL ,
-  "login" varchar(255) NOT NULL ,
-  "time" BIGINT ,
+CREATE TABLE login_attempts (
+  "id" serial NOT NULL,
+  "ip_address" varchar(15) NOT NULL,
+  "login" varchar(255) NOT NULL,
+  "time" BIGINT,
+  "result" integer DEFAULT 0,
   PRIMARY KEY ("id")
 );
+ALTER TABLE public.login_attempts OWNER TO i2soft;
 
 CREATE TABLE roles (
   id serial,

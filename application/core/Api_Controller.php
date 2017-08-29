@@ -80,10 +80,13 @@ class API_Controller extends REST_Controller
     protected function verify_token()
     {
         // lookup API Key record by value from HTTP header
-        if (is_null($this->rest->key)) {
+        if (isset($this->rest->key) && is_null($this->rest->key)) {
             $key = $this->input->get_request_header(config_item('rest_key_name'));
             if (is_null($key)) {
                 $key = $this->input->get_post('Token');
+            }
+            if(is_null($key)){
+                return ;
             }
             $this->mApiKey = $this->api_keys->get_by(config_item('rest_key_column'), $key);
             if (!is_null($this->mApiKey)) {

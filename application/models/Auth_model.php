@@ -35,15 +35,35 @@ class Auth_model extends MY_Model
     // Check login valid
     public function login($identity, $password)
     {
+        // todo: captcha
+
         if (empty($identity) || empty($password)) {
             $this->set_error('login_unsuccessful');
             return FALSE;
         }
+
+        if($this->is_max_login_attempts_exceeded($identity)) {
+            $this->set_error('login_timeout');
+            return FALSE;
+        }
+
         $this->_table = $this->auth_tables['users'];
         $user = $this->get_by($this->identity_column, $identity);
+
         if (!empty($user)) {
-            return $this->verify_password($password, $user);
+            $login_result = $this->verify_password($password, $user);
+            if($login_result) {
+                // todo, update last login
+
+                //todo: check user status
+
+            }
+            $this->increase_login_attempts($identity, $login_result ? 1 : 0);
+            return $login_result;
+        }else{
+            $this->set_error('login_unknown_user');
         }
+        return FALSE;
 
     }
 
@@ -90,6 +110,60 @@ class Auth_model extends MY_Model
             }
             return ($hash_pwd == $user->password ? TRUE : FALSE);
         }
+    }
+
+    function increase_login_attempts($identity, $result = 0)
+    {
+        if($this->config->item('track_login_attempts', 'auth')) {
+            $data = array('ip_address'=>'', 'login'=>$identity, 'time'=>time(), 'result'=>$result);
+            if($this->config->item('track_login_ip_address', 'auth')) {
+                $data['ip_address'] = $this->input->ip_address();
+            }
+            $this->_table = $this->auth_tables['login_attempts'];
+            return $this->insert($data);
+        }
+        return false;
+    }
+
+    /**
+     * check, is max login attempts exceeded
+     * @param $identity
+     * @param $ip_address
+     * @return boolean
+     */
+    function is_max_login_attempts_exceeded($identity, $ip_address = NULL)
+    {
+        if($this->config->item('track_login_attempts', 'auth')) {
+            $max_attempts = $this->config->item('maximum_login_attempts', 'auth');
+            if($max_attempts > 0) {
+                $attempts = $this->get_attempts_count($identity, $ip_address);
+                return $attempts > $max_attempts;
+            }
+        }
+        return false;
+    }
+
+    function get_attempts_count($identity, $ip_address = NULL)
+    {
+        if($this->config->item('track_login_attempts', 'auth')) {
+            $this->_database->select('1', FALSE);
+            $this->_database->where('login', $identity);
+            if ($this->config->item('track_login_ip_address', 'auth')) {
+                if (!isset($ip_address)) {
+                    $ip_address = $this->input->ip_address();
+                }
+                $this->_database->where('ip_address', $ip_address);
+            }
+            $this->_database->where('time >', time() - $this->config->item('lockout_time', 'auth'), FALSE);
+            $qres = $this->_database->get($this->auth_tables['login_attempts']);
+            return $qres->num_rows();
+        }
+        return 0;
+    }
+
+    function is_time_lock_out($identity, $ip_address = NULL)
+    {
+        return $this->is_max_login_attempts_exceeded($identity, $ip_address);
     }
 
     /**
