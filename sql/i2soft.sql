@@ -52,7 +52,7 @@ CREATE TABLE users (
   active integer DEFAULT 0,
   create_time BIGINT NOT NULL,
   last_login BIGINT DEFAULT NULL,
-  ip_address varchar(15) NOT NULL,
+  ip_address varchar(15),
   PRIMARY KEY (id)
 );
 ALTER TABLE public.users OWNER TO i2soft;

@@ -13,6 +13,10 @@ class Auth_model extends MY_Model
     protected $messages;
     protected $errors;
 
+    private $__inactive = 0;
+    private $__active = 1;
+    private $__suspend = 2;
+
     public function __construct()
     {
         parent::__construct();
@@ -42,7 +46,7 @@ class Auth_model extends MY_Model
             return FALSE;
         }
 
-        if($this->is_max_login_attempts_exceeded($identity)) {
+        if ($this->is_max_login_attempts_exceeded($identity)) {
             $this->set_error('login_timeout');
             return FALSE;
         }
@@ -52,15 +56,19 @@ class Auth_model extends MY_Model
 
         if (!empty($user)) {
             $login_result = $this->verify_password($password, $user);
-            if($login_result) {
-                // todo, update last login
+            if ($login_result) {
 
-                //todo: check user status
+                if ($user->active === $this->__inactive) {
+                    $this->set_error('login_unsuccessful_not_active');
+                    return FALSE;
+                }
 
+                $ret = $this->update_last_login($user);
+var_dump($ret);
             }
             $this->increase_login_attempts($identity, $login_result ? 1 : 0);
             return $login_result;
-        }else{
+        } else {
             $this->set_error('login_unknown_user');
         }
         return FALSE;
@@ -79,11 +87,10 @@ class Auth_model extends MY_Model
         if ($this->hash_method == 'bcrypt' || $this->config->item('use_password_hash', 'auth')) {
             return password_hash($password, $this->config->item('password_hash_algo', 'auth'), $this->config->item('password_hash_options', 'auth'));
         } else {
-            if (!($this->store_salt && $salt))
-            {
+            if (!($this->store_salt && $salt)) {
                 $salt = $this->salt();
-                return $salt.substr(hash($this->hash_method, $password . $salt), 0, -$this->salt_length);
-            }else{
+                return $salt . substr(hash($this->hash_method, $password . $salt), 0, -$this->salt_length);
+            } else {
                 return hash($this->hash_method, $password . $salt);
             }
         }
@@ -95,8 +102,7 @@ class Auth_model extends MY_Model
      */
     function verify_password($password, $user)
     {
-        if (empty($user) || empty($password))
-        {
+        if (empty($user) || empty($password)) {
             return FALSE;
         }
         if ($this->hash_method == 'bcrypt' || $this->config->item('use_password_hash', 'auth')) {
@@ -104,9 +110,9 @@ class Auth_model extends MY_Model
         } else {
             if ($this->store_salt) {
                 $hash_pwd = hash($this->hash_method, $password . $user->salt);
-            }else{
+            } else {
                 $salt = substr($user->password, 0, $this->salt_length);
-                $hash_pwd =  $salt . substr(hash($this->hash_method, $password . $salt), 0, -$this->salt_length);
+                $hash_pwd = $salt . substr(hash($this->hash_method, $password . $salt), 0, -$this->salt_length);
             }
             return ($hash_pwd == $user->password ? TRUE : FALSE);
         }
@@ -114,9 +120,9 @@ class Auth_model extends MY_Model
 
     function increase_login_attempts($identity, $result = 0)
     {
-        if($this->config->item('track_login_attempts', 'auth')) {
-            $data = array('ip_address'=>'', 'login'=>$identity, 'time'=>time(), 'result'=>$result);
-            if($this->config->item('track_login_ip_address', 'auth')) {
+        if ($this->config->item('track_login_attempts', 'auth')) {
+            $data = array('ip_address' => '', 'login' => $identity, 'time' => time(), 'result' => $result);
+            if ($this->config->item('track_login_ip_address', 'auth')) {
                 $data['ip_address'] = $this->input->ip_address();
             }
             $this->_table = $this->auth_tables['login_attempts'];
@@ -133,9 +139,9 @@ class Auth_model extends MY_Model
      */
     function is_max_login_attempts_exceeded($identity, $ip_address = NULL)
     {
-        if($this->config->item('track_login_attempts', 'auth')) {
+        if ($this->config->item('track_login_attempts', 'auth')) {
             $max_attempts = $this->config->item('maximum_login_attempts', 'auth');
-            if($max_attempts > 0) {
+            if ($max_attempts > 0) {
                 $attempts = $this->get_attempts_count($identity, $ip_address);
                 return $attempts > $max_attempts;
             }
@@ -145,7 +151,7 @@ class Auth_model extends MY_Model
 
     function get_attempts_count($identity, $ip_address = NULL)
     {
-        if($this->config->item('track_login_attempts', 'auth')) {
+        if ($this->config->item('track_login_attempts', 'auth')) {
             $this->_database->select('1', FALSE);
             $this->_database->where('login', $identity);
             if ($this->config->item('track_login_ip_address', 'auth')) {
@@ -164,6 +170,14 @@ class Auth_model extends MY_Model
     function is_time_lock_out($identity, $ip_address = NULL)
     {
         return $this->is_max_login_attempts_exceeded($identity, $ip_address);
+    }
+
+    function update_last_login($user)
+    {
+        $data['last_login'] = time();
+        $data['ip_address'] = $this->input->ip_address();
+        $this->_table = $this->auth_tables['users'];
+        return $this->update($user->id, $data);
     }
 
     /**
@@ -230,9 +244,9 @@ class Auth_model extends MY_Model
         $salt = $buffer;
 
         // encode string with the Base64 variant used by crypt
-        $base64_digits   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        $base64_digits = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
         $bcrypt64_digits = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        $base64_string   = base64_encode($salt);
+        $base64_string = base64_encode($salt);
         $salt = strtr(rtrim($base64_string, '='), $base64_digits, $bcrypt64_digits);
 
         $salt = substr($salt, 0, $this->salt_length);
@@ -242,12 +256,13 @@ class Auth_model extends MY_Model
 
     }
 
-    public function user($id = null, $identity = null){
+    public function user($id = null, $identity = null)
+    {
         $this->_table = $this->auth_tables['users'];
         $user = array();
-        if($id != null){
+        if ($id != null) {
             $user = $this->get_by('id', $id);
-        }elseif($identity != null){
+        } elseif ($identity != null) {
             $user = $this->get_by($this->identity_column, $identity);
         }
         return $user;
@@ -255,15 +270,16 @@ class Auth_model extends MY_Model
 
     public function get_user_tenant($id)
     {
-        $query = $this->_database->join($this->auth_tables['tenant'], $this->auth_tables['users'].'.'.$this->join['tenant'].'='.$this->auth_tables['tenant'].'.id')
-            ->where($this->auth_tables['users'].'.id', $id)
+        $query = $this->_database->join($this->auth_tables['tenant'], $this->auth_tables['users'] . '.' . $this->join['tenant'] . '=' . $this->auth_tables['tenant'] . '.id')
+            ->where($this->auth_tables['users'] . '.id', $id)
             ->get($this->auth_tables['users']);
         return $query->row();
     }
 
-    public function get_user_roles($id) {
-        $query = $this->_database->join($this->auth_tables['roles'], $this->auth_tables['role_user'].'.'.$this->join['roles'].'='.$this->auth_tables['roles'].'.id')
-            ->where($this->auth_tables['role_user'].'.'.$this->join['users'], $id)
+    public function get_user_roles($id)
+    {
+        $query = $this->_database->join($this->auth_tables['roles'], $this->auth_tables['role_user'] . '.' . $this->join['roles'] . '=' . $this->auth_tables['roles'] . '.id')
+            ->where($this->auth_tables['role_user'] . '.' . $this->join['users'], $id)
             ->get($this->auth_tables['role_user']);
         return $query->result();
     }
