@@ -37,8 +37,7 @@ class Node extends API_Controller
     public function hello_get()
     {
         $response = $this->rpc_client->node_hello('http://172.16.117.128:26821');
-        $data['returnCode'] = $response;
-        $this->response($data);
+        $this->success(array(), $response);
     }
 
     /**

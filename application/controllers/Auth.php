@@ -37,47 +37,32 @@ class Auth extends API_Controller
      *    )
      * )
      */
-    public function token_post() {
+    public function token_post()
+    {
 
         //check params and check user info
         $identity = $this->post('username');
         $password = $this->post('pwd');
 
-        if($this->i2_auth->login($identity, $password)){
+        if ($this->i2_auth->login($identity, $password)) {
             // Build a new key
             $key = $this->_generate_key();
 
             // If no key level provided, provide a generic key
             $level = $this->post('level') ? $this->post('level') : 1;
-            $ignore_limits = ctype_digit($this->post('ignore_limits')) ? (int) $this->post('ignore_limits') : 1;
+            $ignore_limits = ctype_digit($this->post('ignore_limits')) ? (int)$this->post('ignore_limits') : 1;
 
             // Insert the new key
-            if ($this->_insert_key($key, ['user_id' => $identity, 'level' => $level, 'ignore_limits' => $ignore_limits]))
-            {
-                $this->response([
-                    'ret' => REST_Controller::HTTP_OK,
-                    'data' => [
-                        'returnCode' => 0,
-                        'returnMsg' => 0,
-                        'token' => $key
-                    ],
-                    'msg' => ''
-                ], REST_Controller::HTTP_OK); // CREATED (201) being the HTTP response code ?
+            if ($this->_insert_key($key, ['user_id' => $identity, 'level' => $level, 'ignore_limits' => $ignore_limits])) {
+                $this->success(array('token' => $key));
             }
         } else {
-            $this->response([
-                'ret' => REST_Controller::HTTP_BAD_REQUEST,
-                'data' => [
-                    'returnCode' => 0,
-                    'returnMsg' => $this->i2_auth->errors(),
-                    'token' => ''
-                ],
-                'msg' => 'Could not save the key'
-            ], REST_Controller::HTTP_OK); // INTERNAL_SERVER_ERROR (500) being the HTTP response code
+            $this->success(array(), Err::$errCodes['user.name_or_pwd_invalid'], $this->i2_auth->errors());
         }
     }
 
-    public function refresh_token_post() {
+    public function refresh_token_post()
+    {
 
     }
 }

@@ -9,9 +9,9 @@
 /**
  * @SWG\SecurityScheme(
  *   securityDefinition="api_key",
- *   type="apiKey",
+ *   type="token",
  *   in="header",
- *   name="api_key"
+ *   name="Authorization"
  * )
  */
 

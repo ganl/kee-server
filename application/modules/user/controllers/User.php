@@ -35,10 +35,10 @@ class User extends API_Controller
      */
     public function index_get()
     {
-        $data = $this->users
+        $data['users'] = $this->users
             ->select('user_uuid, username, email, active, first_name, last_name')
-            ->get_all();
-        $this->response($data);
+            ->as_array()->get_all();
+        $this->success($data);
     }
 
     /**
@@ -69,7 +69,7 @@ class User extends API_Controller
         $data = $this->users
             ->select('user_uuid, username, email, active, first_name, last_name')
             ->get($id);
-        $this->response($data);
+        $this->success($data);
     }
 
     /**

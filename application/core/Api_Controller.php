@@ -72,7 +72,7 @@ class API_Controller extends REST_Controller
 
     public function set_t_prefix()
     {
-        $global_t_prefix = [ 'tenant_table_prefix' => $this->tenant_table_prefix ];
+        $global_t_prefix = ['tenant_table_prefix' => $this->tenant_table_prefix];
         $this->load->vars($global_t_prefix);
     }
 
@@ -85,8 +85,8 @@ class API_Controller extends REST_Controller
             if (is_null($key)) {
                 $key = $this->input->get_post('Token');
             }
-            if(is_null($key)){
-                return ;
+            if (is_null($key)) {
+                return;
             }
             $this->mApiKey = $this->api_keys->get_by(config_item('rest_key_column'), $key);
             if (!is_null($this->mApiKey)) {
@@ -138,30 +138,57 @@ class API_Controller extends REST_Controller
     }
 
     // Shortcut functions following REST_Controller convention
-    protected function success($msg = NULL)
+
+    protected function i2_response($additional_data = array(), $code = REST_Controller::HTTP_OK, $msg = null)
     {
-        $data = array('ret' => TRUE);
-        if (!empty($msg)) $data['message'] = $msg;
-        $this->response($data, REST_Controller::HTTP_OK);
+        $data = array(
+            'ret' => $code,
+            'msg' => !empty($msg) ? $msg : '',
+        );
+
+        // (optional) append additional data
+        if (!empty($additional_data)) {
+            $data['data'] = $additional_data;
+        }/*else{
+            $data['data'] = [
+                'code' => 0,
+                'message' => '',
+            ];
+        }*/
+
+        $this->response($data, $code);
     }
 
+    // http code 200, return code 0
+    protected function success($api_content = array(), $code = 0, $message = null)
+    {
+        $additional_data = [
+            'code' => $code,
+            'message' => !empty($message) ? $message : '',
+        ];
+        $additional_data = array_merge($additional_data, $api_content);
+        $this->i2_response($additional_data, REST_Controller::HTTP_OK);
+    }
+
+    //code 201 , put 如果目标资源不存在，并且PUT方法成功创建了一份，那么源头服务器必须返回201 (Created) 来通知客户端资源已创建。
     protected function created($msg = NULL)
     {
-        $data = array('ret' => TRUE);
-        if (!empty($msg)) $data['message'] = $msg;
-        $this->response($data, REST_Controller::HTTP_CREATED);
+        $additional_data = [
+            'code' => 0,
+            'message' => !empty($msg) ? $msg : '',
+        ];
+        $this->i2_response($additional_data, REST_Controller::HTTP_CREATED);
     }
 
+    //code 202, asynchronous
     protected function accepted($msg = NULL)
     {
-        $data = array('ret' => TRUE);
-        if (!empty($msg)) $data['message'] = $msg;
-        $this->response($data, REST_Controller::HTTP_ACCEPTED);
+        $this->i2_response(array(), REST_Controller::HTTP_ACCEPTED, $msg);
     }
 
     protected function error($msg = 'An error occurs', $code = REST_Controller::HTTP_OK, $additional_data = array())
     {
-        $data = array('ret' => FALSE, 'error' => $msg);
+        $data = array('ret' => FALSE, 'msg' => $msg);
 
         // (optional) append additional data
         if (!empty($additional_data))
@@ -170,34 +197,29 @@ class API_Controller extends REST_Controller
         $this->response($data, $code);
     }
 
-    protected function error_bad_request()
+    protected function error_bad_request($msg = null)
     {
-        $data = array('ret' => FALSE);
-        $this->response($data, REST_Controller::HTTP_BAD_REQUEST);
+        $this->i2_response(array(), REST_Controller::HTTP_BAD_REQUEST, $msg);
     }
 
-    protected function error_unauthorized()
+    protected function error_unauthorized($msg = null)
     {
-        $data = array('ret' => FALSE);
-        $this->response($data, REST_Controller::HTTP_UNAUTHORIZED);
+        $this->i2_response(array(), REST_Controller::HTTP_UNAUTHORIZED, $msg);
     }
 
     protected function error_forbidden()
     {
-        $data = array('ret' => FALSE);
-        $this->response($data, REST_Controller::HTTP_FORBIDDEN);
+        $this->response(array(), REST_Controller::HTTP_FORBIDDEN);
     }
 
     protected function error_not_found()
     {
-        $data = array('ret' => REST_Controller::HTTP_NOT_FOUND, 'msg' => '');
-        $this->response($data, REST_Controller::HTTP_NOT_FOUND);
+        $this->response(array(), REST_Controller::HTTP_NOT_FOUND);
     }
 
     protected function error_method_not_allowed()
     {
-        $data = array('ret' => FALSE);
-        $this->response($data, REST_Controller::HTTP_METHOD_NOT_ALLOWED);
+        $this->response(array(), REST_Controller::HTTP_METHOD_NOT_ALLOWED);
     }
 
     protected function error_not_implemented($additional_data = array())

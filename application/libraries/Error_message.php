@@ -122,6 +122,8 @@ class Error_message
 
         'login_successful' => '10001003',
 
+        'user.name_or_pwd_invalid' => '10001104',
+
 
         //node
         'node.cc_uuid_invalid' => '10011113',

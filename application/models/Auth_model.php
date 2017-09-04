@@ -67,6 +67,7 @@ class Auth_model extends MY_Model
 
                 $this->update_last_login($user);
             }
+            $this->set_error('login_unknown_user');
             $this->increase_login_attempts($identity, $login_result ? 1 : 0);
             return $login_result;
         } else {
