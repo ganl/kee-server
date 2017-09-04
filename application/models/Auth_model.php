@@ -32,6 +32,8 @@ class Auth_model extends MY_Model
 
         $this->join = $this->config->item('join', 'auth');
 
+        $this->admin_role = $this->config->item('admin_role', 'auth');
+
         $this->messages = [];
         $this->errors = [];
     }
@@ -63,8 +65,7 @@ class Auth_model extends MY_Model
                     return FALSE;
                 }
 
-                $ret = $this->update_last_login($user);
-var_dump($ret);
+                $this->update_last_login($user);
             }
             $this->increase_login_attempts($identity, $login_result ? 1 : 0);
             return $login_result;
@@ -282,6 +283,255 @@ var_dump($ret);
             ->where($this->auth_tables['role_user'] . '.' . $this->join['users'], $id)
             ->get($this->auth_tables['role_user']);
         return $query->result();
+    }
+
+    public function create_user($identity, $password, $email, $additional = array(), $roles = array())
+    {
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Group operation
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+    public function create_group($group)
+    {
+        // todo create group
+    }
+
+    public function get_group_id($group_para)
+    {
+        // todo get group id, refactor get permission and role id
+    }
+
+    public function get_group_name($group_id)
+    {
+
+    }
+
+    public function update_group($group_para, $group_name = false, $description = false)
+    {
+        // todo update a group
+    }
+
+    public function is_member($group_para, $user_id)
+    {
+        // todo check is member of group
+    }
+
+    public function delete_group($group_para)
+    {
+        // todo delete a group by id or name
+    }
+
+    public function add_member($user_id, $group_para)
+    {
+        //todo add a user to group
+    }
+
+    public function remove_member($user_id, $group_para)
+    {
+        // todo remove a user from a group
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Roles operation
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+    public function get_role_id($role_para)
+    {
+        if (is_numeric($role_para)) {
+            return $role_para;
+        }
+
+        $this->_table = $this->auth_tables['roles'];
+        $role = $this->get_by('name', $role_para);
+        if (is_null($role)) {
+            return false;
+        } else {
+            return $role->id;
+        }
+    }
+
+    public function has_role($user_id, $role_para)
+    {
+        $role_id = $this->get_role_id($role_para);
+        $query = $this->_database->where('user_id', $user_id)
+            ->where('role_id', $role_id)
+            ->get($this->auth_tables['role_user']);
+        return $query->row();
+    }
+
+    public function is_super_admin($user_id)
+    {
+        return $this->has_role($user_id, $this->admin_role);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Permissions operation
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+    /**
+     * @param $perm array a new permission
+     * @return int|bool permission id or false on fail
+     */
+    public function create_perm($perm)
+    {
+        $this->_table = $this->auth_tables['perms'];
+        $row = $this->get_by('name', $perm['name']);
+        if (is_null($row)) {
+            $data = [
+                'name' => $perm['name'],
+                'description' => $perm['description'],
+                'display_name' => $perm['display_name'] ? $perm['display_name'] : '',
+            ];
+            return $this->insert($data);
+        }
+        $this->set_error('permission_exists');
+        return false;
+    }
+
+    public function get_perm_id($perm_para)
+    {
+        if (is_numeric($perm_para)) {
+            return $perm_para;
+        }
+
+        $this->_table = $this->auth_tables['perms'];
+        $perm = $this->get_by('name', $perm_para);
+        if (is_null($perm)) {
+            return false;
+        } else {
+            return $perm->id;
+        }
+    }
+
+    /**
+     * @param $perm_para int|string permission id or permission name
+     * @param $update_data
+     * @return boolean Update success or failure
+     */
+    public function update_perm($perm_para, $update_data)
+    {
+        $perm_id = $this->get_perm_id($perm_para); // $this->_table
+
+        if (isset($update_data['name'])) {
+            $data['name'] = $update_data['name'];
+        }
+
+        if (isset($update_data['description'])) {
+            $data['description'] = $update_data['description'];
+        }
+
+        if (isset($update_data['display_name'])) {
+            $data['display_name'] = $update_data['display_name'];
+        }
+
+        return $this->update($perm_id, $data);
+    }
+
+    public function is_role_allowed($user_id, $perm_id, $role_para = false)
+    {
+        if ($role_para !== false) {
+            $role_para = $this->get_role_id($role_para);
+            $query = $this->_database->where('perm_id', $perm_id)
+                ->where('role_id', $role_para)
+                ->get($this->auth_tables['perm_to_role']);
+            $role_allowed = false;
+            if ($query->num_rows() > 0) {
+                $role_allowed = true;
+            }
+            return $role_allowed;
+        } else {
+            $user_roles = $this->get_user_roles($user_id);
+            foreach ($user_roles as $role) {
+                if ($this->is_role_allowed($user_id, $perm_id, $role->id)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public function has_perm($user_id, $perm_para)
+    {
+        if ($this->is_super_admin($user_id)) {
+            return true;
+        }
+
+        $perm_id = $this->get_perm_id($perm_para);
+
+        return $this->is_role_allowed($user_id, $perm_id);
+
+    }
+
+    public function delete_perm($perm_para)
+    {
+        $perm_id = $this->get_perm_id($perm_para);
+        $this->_database->trans_start();
+
+        // delete from perms_role table
+        $this->_database->where('perm_id', $perm_id);
+        $this->_database->delete($this->auth_tables['perm_to_role']);
+
+        // delete from perms table
+        $this->_database->where('id', $perm_id);
+        $this->_database->delete($this->auth_tables['perms']);
+
+        $this->_database->trans_complete();
+        return $this->_database->trans_status();
+    }
+
+    public function list_perms()
+    {
+        return $this->get_all();
+    }
+
+    public function attach_perm($role_para, $perm_para)
+    {
+        $perm_id = $this->get_perm_id($perm_para);
+
+        if (!$perm_id) {
+            return false;
+        }
+
+        $role_id = $this->get_role_id($role_para);
+        if (!$role_id) {
+            return false;
+        }
+
+        $query = $this->_database->where('perm_id', $perm_id)
+            ->where('role_id', $role_id)
+            ->get($this->auth_tables['perm_to_role']);
+        if ($query->num_rows() < 1) {
+            $data = [
+                'role_id' => $role_id,
+                'perm_id' => $perm_id
+            ];
+            $this->_table = $this->auth_tables['perm_to_role'];
+            return $this->insert($data);
+        }
+        return true;
+    }
+
+    public function detach_perm($role_para, $perm_para)
+    {
+        $perm_id = $this->get_perm_id($perm_para);
+        $role_id = $this->get_role_id($role_para);
+
+        $this->_database->where('role_id', $role_id)
+            ->where('perm_id', $perm_id);
+        return $this->_database->delete($this->auth_tables['perm_to_role']);
     }
 
     public function set_error($error)

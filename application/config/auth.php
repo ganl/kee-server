@@ -69,3 +69,6 @@ $config['track_login_ip_address']     = TRUE;               // Track login attem
 $config['captcha_login_attempts']     = 5;                  // Login Attempts to display CAPTCHA
 $config['maximum_login_attempts']     = 12;                  // The maximum number of failed login attempts.
 $config['lockout_time']               = 900;                // The number of seconds to lockout an account due to exceeded attempts
+
+$config['default_role']              = 'operator';           // Default group, use name
+$config['admin_role']                = 'admin';             // Default administrators group, use name
