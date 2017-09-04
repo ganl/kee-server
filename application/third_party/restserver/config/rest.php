@@ -615,5 +615,7 @@ $config['rest'] = array(
         'Access-Control-Allow-Origin: *',
         'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-KEY, X-ACCESS-TOKEN',
-    ]
+    ],
+    // compatible with api 1.5
+    'compatible_ret' => true
 );

@@ -166,6 +166,12 @@ class API_Controller extends REST_Controller
             'code' => $code,
             'message' => !empty($message) ? $message : '',
         ];
+
+        if ($this->_config['compatible_ret']) {
+            $additional_data['returnCode'] = $additional_data['code'];
+            $additional_data['returnMsg'] = $additional_data['message'];
+        }
+
         $additional_data = array_merge($additional_data, $api_content);
         $this->i2_response($additional_data, REST_Controller::HTTP_OK);
     }
@@ -177,6 +183,10 @@ class API_Controller extends REST_Controller
             'code' => 0,
             'message' => !empty($msg) ? $msg : '',
         ];
+        if ($this->_config['compatible_ret']) {
+            $additional_data['returnCode'] = $additional_data['code'];
+            $additional_data['returnMsg'] = $additional_data['message'];
+        }
         $this->i2_response($additional_data, REST_Controller::HTTP_CREATED);
     }
 
