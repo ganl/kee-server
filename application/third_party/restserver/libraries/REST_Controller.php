@@ -640,6 +640,16 @@ abstract class REST_Controller extends MX_Controller {
         // Remove the supported format from the function name e.g. index.json => index
         $object_called = preg_replace('/^(.*)\.(?:'.implode('|', array_keys($this->_supported_formats)).')$/', '$1', $object_called);
 
+        if($this->request->method == 'options'){
+            if($this->config->item('rest_corsdomain')){
+                $config = $this->config->item('rest');
+                foreach ($config['headers'] as $header) {
+                    header($header);
+                }
+            }
+            return true;
+        }
+
         $controller_method = $object_called.'_'.$this->request->method;
             // Does this method exist? If not, try executing an index method
             if (!method_exists($this, $controller_method)) {

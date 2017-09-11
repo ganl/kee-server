@@ -609,6 +609,7 @@ $config['allow_any_cors_domain'] = FALSE;
 */
 $config['allowed_cors_origins'] = [];
 
+$config['rest_corsdomain'] = true;
 $config['rest'] = array(
     // Raw PHP Headers
     'headers' => [
