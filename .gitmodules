@@ -1,0 +1,4 @@
+[submodule "application/third_party/oauth2"]
+	path = application/third_party/oauth2
+	url = https://github.com/bshaffer/oauth2-server-php.git
+	branch = master
