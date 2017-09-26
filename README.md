@@ -1,6 +1,19 @@
 # 控制台API
 
-## init
+## Install Dependencies
+
+### 手动安装Composer
+下载https://getcomposer.org/composer.phar
+
+在 composer.phar 同目录下,创建 composer.bat :
+
+``C:\composer>echo @php "%~dp0composer.phar" %*>composer.bat```
+
+将composer.bat所在的目录路径加到系统环境变量PATH里，新开命令窗口查看版本:
+
+C:\Users\ganl>composer -V
+Composer version 1.6-dev (edece864e7e4c668dcad6601df70777882d22116) 2017-09-19 08:42:10
+
 
 ```
 cd application
