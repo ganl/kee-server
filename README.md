@@ -11,14 +11,16 @@
 
 将composer.bat所在的目录路径加到系统环境变量PATH里，新开命令窗口查看版本:
 
+```
 C:\Users\ganl>composer -V
 Composer version 1.6-dev (edece864e7e4c668dcad6601df70777882d22116) 2017-09-19 08:42:10
-
+```
 
 ```
 cd application
 composer install
 ```
+
 ## add listen port and VirtualHost 
 
 ```
