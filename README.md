@@ -4,6 +4,11 @@
 
 ## Install Dependencies
 
+```
+cd application
+composer install
+```
+
 ### 手动安装Composer
 下载https://getcomposer.org/composer.phar
 
@@ -16,11 +21,6 @@
 ```
 C:\Users\ganl>composer -V
 Composer version 1.6-dev (edece864e7e4c668dcad6601df70777882d22116) 2017-09-19 08:42:10
-```
-
-```
-cd application
-composer install
 ```
 
 ### API response
