@@ -41,14 +41,16 @@ class Migrate
                 return false;
             } else {
                 $this->forge_db->query("CREATE USER " . $this->_prod_user . " WITH PASSWORD '" . $this->_prod_pwd . "' CREATEDB");
+                log_message('info', 'CREATE USER !');
                 $this->forge_db->query("ALTER USER " . $this->_prod_user . " WITH PASSWORD '" . $this->_prod_pwd . "' CREATEDB");
+                log_message('info', 'ALTER USER');
                 $this->forge_db->query("ALTER DATABASE " . $this->_prod_db . " OWNER TO " . $this->_prod_user);
-                log_message('info', 'Create database success !');
+                log_message('info', 'ALTER DATABASE');
             }
         }
 
         $this->load->database();
-        $this->db->query("CREATE SCHEMA " . $this->_prod_schema . " AUTHORIZATION " . $this->_prod_user);
+//        $this->db->query("CREATE SCHEMA " . $this->_prod_schema . " AUTHORIZATION " . $this->_prod_user);
         $this->load->dbutil();
         $this->load->dbforge();
 

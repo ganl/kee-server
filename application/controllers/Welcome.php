@@ -21,6 +21,7 @@ class Welcome extends MX_Controller {
 	public function index()
 	{
         $this->load->helper('url');
+        $this->__upgrade_db();
 		$this->load->view('welcome_message');
 	}
 
@@ -31,7 +32,7 @@ class Welcome extends MX_Controller {
         $this->vpxmigration->generate();
     }*/
 
-    public function test_upgrade()
+    private function __upgrade_db()
     {
         $this->load->library('migrate');
         $this->migrate->upgrade();

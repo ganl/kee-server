@@ -44,6 +44,11 @@ class API_Controller extends REST_Controller
 
     public $tenant_table_prefix = '';
 
+    public $autoload = array(
+//        'helper'    => array('url', 'form'),
+        'libraries' => array('database'),
+    );
+
     // Constructor
     public function __construct()
     {
