@@ -193,18 +193,18 @@ INSERT INTO tenant (id, tenant_name, tenant_type, description, create_time) VALU
 (1, '__default__', 1, 'system', extract(epoch from now()));
 
 --
---ϵͳ����Ա���û���ɾ�ġ�ϵͳ���û�Ȩ�޹����������İ�ȫ��������(ϵͳ��������)
---��ƹ���Ա���鿴ϵͳ��־����¼ϵͳ������Ա��ز�����
---��˹���Ա���Թؼ���ϵͳ�����½��˺š�Ȩ�ޱ�����������뾭�ɸý�ɫ��������ͨ���������Ч
---ҵ�����Ա����ҵ�����Ա����Ȩ�ޣ���ͬ��ҵ�����Ա�в�ͬ��Ȩ�ޣ����紴������������������
---ҵ������Ա�������ֱ���
---ҵ�����Ա������ҵ�����Ȩ��
---ҵ�����Ա���鿴ҵ�����Ա�Ĳ�����־����¼ҵ����ز�����
+--系统管理员：用户增删改、系统级用户权限管理、审计外的安全策略配置(系统参数配置)
+--审计管理员：查看系统日志（记录系统及管理员相关操作）
+--审核管理员：对关键的系统（如新建账号、权限变更）操作必须经由该角色进行审批通过后才能生效
+--业务管理员：给业务操作员分配权限，不同的业务操作员有不同的权限：比如创建工作机、建立规则
+--业务配置员：配置灾备机
+--业务操作员：具有业务操作权限
+--业务审计员：查看业务操作员的操作日志（记录业务相关操作）
 --
 
 --
---����admin��ϵͳ����Ա����operator ��ҵ�����Ա����ͨ�û����� auditor �����Ա��������־��Ƶȣ��������ڵ���־��
---���������û�ͨ�� role permission ���ƣ�������ȫ���Ҫ��ʱ������Ȩ����ϸ��
+--内置admin（系统管理员），operator （业务操作员、普通用户）， auditor （审计员，操作日志审计等，不包括节点日志）
+--其他类型用户通过 role permission 控制，遇到安全监测要求时，功能权限再细分
 --
 INSERT INTO roles (id, name, display_name, description) VALUES
 ('1', 'admin', 'Administrator', 'Super User'),

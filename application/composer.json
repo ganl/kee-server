@@ -2,5 +2,14 @@
     "require": {
         "firebase/php-jwt": "^5.0",
         "zircote/swagger-php": "^2.0"
+    },
+    "config": {
+        "secure-http": false
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }
