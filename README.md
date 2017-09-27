@@ -22,9 +22,9 @@ composer install
 C:\Users\ganl>composer -V
 Composer version 1.6-dev (edece864e7e4c668dcad6601df70777882d22116) 2017-09-19 08:42:10
 ```
-遇到错误下面错误请执行：```composer config -g secure-http false```
+遇到错误：
 Your configuration does not allow connection to http://ooxx/xxoo.git. See https://getcomposer.org/doc/06-config.md#secure-http for details.
-
+请执行：```composer config -g secure-http false```
 
 ### API response
 
