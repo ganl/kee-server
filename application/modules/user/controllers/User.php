@@ -16,21 +16,17 @@ class User extends API_Controller
 
     /**
      * @SWG\Get(
-     *    path="/users",
+     *    path="/user",
      *    tags={"user"},
      *    summary="List out users",
-     *    @SWG\Parameter(
-     *        in="header",
-     *        name="X-API-KEY",
-     *        description="API Key",
-     *        required=false,
-     *        type="string"
-     *    ),
      *    @SWG\Response(
      *        response="200",
      *        description="List of users",
      *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
-     *    )
+     *    ),
+     *    security={{
+     *      "token":{}
+     *    }}
      * )
      */
     public function index_get()
@@ -43,7 +39,7 @@ class User extends API_Controller
 
     /**
      * @SWG\Get(
-     *    path="/users/{user_uuid}",
+     *    path="/user/{user_uuid}",
      *    tags={"user"},
      *    summary="Look up a user",
      * 	@SWG\Parameter(
@@ -74,7 +70,7 @@ class User extends API_Controller
 
     /**
      * @SWG\Put(
-     *    path="/users/{uuid}",
+     *    path="/user/{uuid}",
      *    tags={"user"},
      *    summary="Update an existing user",
      * 	@SWG\Parameter(

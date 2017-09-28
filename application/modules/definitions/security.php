@@ -8,8 +8,8 @@
 
 /**
  * @SWG\SecurityScheme(
- *   securityDefinition="api_key",
- *   type="token",
+ *   securityDefinition="token",
+ *   type="apiKey",
  *   in="header",
  *   name="Authorization"
  * )

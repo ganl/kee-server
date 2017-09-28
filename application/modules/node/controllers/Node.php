@@ -22,8 +22,8 @@ class Node extends API_Controller
      *    summary="send hello message to node",
      *    @SWG\Parameter(
      *        in="header",
-     *        name="X-API-KEY",
-     *        description="API Key",
+     *        name="X-CUSTOM-HEAD",
+     *        description="header param",
      *        required=false,
      *        type="string"
      *    ),
@@ -31,7 +31,10 @@ class Node extends API_Controller
      *        response="200",
      *        description="List of users",
      *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
-     *    )
+     *    ),
+     *    security={{
+     *      "token":{}
+     *    }}
      * )
      */
     public function hello_get()
@@ -46,11 +49,11 @@ class Node extends API_Controller
      *    tags={"node"},
      *    summary="send hello message to node",
      *    @SWG\Parameter(
-     *        in="header",
-     *        name="X-API-KEY",
-     *        description="API Key",
-     *        required=false,
-     *        type="string"
+     *        in="body",
+     *        name="body",
+     *        description="",
+     *        required=true,
+     *        @SWG\Schema(ref="#/definitions/Node")
      *    ),
      *    @SWG\Response(
      *        response="200",
@@ -78,7 +81,7 @@ class Node extends API_Controller
     /**
      * @SWG\Get(
      *    path="/node/index",
-     *    tags={"user"},
+     *    tags={"node"},
      *    summary="List out users",
      *  @SWG\Parameter(
      *        in="header",
@@ -105,7 +108,7 @@ class Node extends API_Controller
     /**
      * @SWG\Get(
      *    path="/node/{node_uuid}",
-     *    tags={"user"},
+     *    tags={"node"},
      *    summary="Look up a user",
      *    @SWG\Parameter(
      *        in="path",
