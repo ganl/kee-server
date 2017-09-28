@@ -9,7 +9,7 @@
 /**
  * @SWG\Tag(
  *   name="auth",
- *   description="Everything about your",
+ *   description="Auth",
  *   @SWG\ExternalDocumentation(
  *     description="Find out more",
  *     url="http://www.info2soft.com"
@@ -29,7 +29,7 @@
  *
  * @SWG\Tag(
  *   name="node",
- *   description="Everything about your",
+ *   description="Operations about node",
  *   @SWG\ExternalDocumentation(
  *     description="Find out more",
  *     url="http://www.info2soft.com"
@@ -38,8 +38,8 @@
  *
  *
  * @SWG\Tag(
- *   name="store",
- *   description="Access to Petstore orders"
+ *   name="dir",
+ *   description="Operations about folder"
  * )
  *
  *

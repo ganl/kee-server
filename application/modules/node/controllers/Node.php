@@ -58,7 +58,7 @@ class Node extends API_Controller
      *    @SWG\Response(
      *        response="200",
      *        description="List of users",
-     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
+     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/Node"))
      *    )
      * )
      */
@@ -93,7 +93,7 @@ class Node extends API_Controller
      *  @SWG\Response(
      *        response="200",
      *        description="List of users",
-     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/User"))
+     *        @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/Node"))
      *    )
      * )
      */
