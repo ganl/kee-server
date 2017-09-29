@@ -172,7 +172,7 @@ ALTER TABLE public.api_token OWNER TO i2soft;
 DROP TABLE IF EXISTS api_logs;
 CREATE TABLE api_logs (
   id serial PRIMARY KEY,
-  uri VARCHAR(512) NOT NULL,
+  uri VARCHAR(1024) NOT NULL,
   method VARCHAR(6) NOT NULL,
   params TEXT DEFAULT NULL,
   api_key VARCHAR(40) NOT NULL,
