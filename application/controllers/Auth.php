@@ -40,7 +40,7 @@ class Auth extends API_Controller
     public function token_post()
     {
 
-        //check params and check user info
+        // todo: check params and check user info
         $identity = $this->post('username');
         $password = $this->post('pwd');
 

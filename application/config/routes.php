@@ -85,16 +85,19 @@ $route['api/v1/(:any)/(:num)']			= "api_v1/$1/id/$2";
 $route['api/v1/(:any)/(:num)/(:any)']	= "api_v1/$1/$3/$2";
 $route['api/v1/(:any)/(:any)']			= "api_v1/$1/$2";
 */
-$route['api/example/users/(:num)']                          = 'api/example/users/id/$1'; // Example 4
-$route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)']  = 'api/example/users/id/$1/format/$3$4'; // Example 8
+$route['api/example/users/(:num)']                               = 'api/example/users/id/$1'; // Example 4
+$route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)']   = 'api/example/users/id/$1/format/$3$4'; // Example 8
 
 //$route['api/user/(:any)/(:num)']                            = 'example/$1/id/$2';
 //$route['api/user/(:any)/(:num)/(:any)']                     = 'example/$1/$3/$2';
 
-$route['user/(:any)']                                       = 'user/user/$1';
+$route['user/(:any)']                                              = 'user/user/$1';
 
-$route['node/(:any)']                                       = 'node/node/$1';
-$route['node/(:any)/(:num)']                                = 'node/node/$1/$2';
+$route['node/(:any)']                                              = 'node/node/$1';
+$route['node/(:any)/(:num)']                                      = 'node/node/$1/$2';
 //$route['node/(:any)/(:num)/(:any)']                         = 'node/node/$1/$3/$2';
 
 //$route['api/node']                                          = 'node/index';
+
+$route['dir']                                                        = 'folder/dir';
+$route['dir(\/)(:any)']                                            = 'folder/dir/$2';

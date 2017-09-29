@@ -12,7 +12,7 @@ class Node extends API_Controller
     {
         parent::__construct();
         $this->load->model('node_model', 'nodes');
-        $this->load->library('rpc_client');
+        $this->load->library('rpc/base_rpc');
     }
 
     /**
@@ -21,10 +21,10 @@ class Node extends API_Controller
      *    tags={"node"},
      *    summary="send hello message to node",
      *    @SWG\Parameter(
-     *        in="header",
-     *        name="X-CUSTOM-HEAD",
-     *        description="header param",
-     *        required=false,
+     *        in="query",
+     *        name="ip",
+     *        description="node address",
+     *        required=true,
      *        type="string"
      *    ),
      *    @SWG\Response(
@@ -39,7 +39,8 @@ class Node extends API_Controller
      */
     public function hello_get()
     {
-        $response = $this->rpc_client->node_hello('http://172.16.117.128:26821');
+        $ip = $this->get('ip');
+        $response = $this->base_rpc->node_hello($ip);
         $this->success(array(), $response);
     }
 
@@ -68,7 +69,7 @@ class Node extends API_Controller
             'os_user' => 'ganl',
             'os_passwd' => '123456'
         ];
-        $response = $this->rpc_client->node_os_auth('http://172.16.117.128:26821', $params);
+        $response = $this->base_rpc->node_os_auth('172.16.117.128', $params);
         $data['returnCode'] = $response;
         $data['returnMsg'] = '';
         if (in_array($data['returnCode'], array(1, 2))) {

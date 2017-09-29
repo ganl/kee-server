@@ -17,3 +17,4 @@ $config['SEPARATOR_KEY'] = ' KEY@@@KEY ';
 $config['SEPARATOR_CC'] = ' CC@@@CC ';
 $config['SEPARATOR'] = '\n';
 
+$config['protocol'] = 'http';
