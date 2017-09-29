@@ -1052,10 +1052,12 @@ abstract class REST_Controller extends MX_Controller {
 
         //add for old API's params
         $key = isset($this->_args[$api_key_variable]) ? $this->_args[$api_key_variable] : $this->input->server($key_name);
-//        $key = $this->input->get_request_header($api_key_variable);
 
         if(is_null($key)){
             $key = $this->input->get_post('Token');
+            if(is_null($key)){
+                $key = $this->input->get_request_header($api_key_variable);
+            }
         }
 
         // Find the key from server or arguments
